@@ -1,0 +1,24 @@
+.card {
+  border-radius: 10px;
+  font-size: 1.25rem;
+  border: 2px solid rgb(50, 89, 49);
+  width: 250px;
+  padding: 15px 25px;
+  text-align: start;
+  transition: all 0.4s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 5px 5px 25px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.info {
+  font-weight: bold;
+  color: rgb(50, 89, 49);
+}
+
+.info span {
+  font-weight: lighter;
+  color: black;
+}
