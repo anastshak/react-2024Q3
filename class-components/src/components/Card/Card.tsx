@@ -1,7 +1,8 @@
 import React from 'react';
+import type { ReactNode } from 'react';
 import style from './Card.module.css';
 
-type Character = {
+export type Character = {
   name: string;
   gender: string;
   height: number;
@@ -9,7 +10,7 @@ type Character = {
 };
 
 export default class Card extends React.Component<{ card: Character }> {
-  render() {
+  render(): ReactNode {
     const { card } = this.props;
     return (
       <div className={style.card}>

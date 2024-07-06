@@ -1,13 +1,13 @@
 .search {
   display: flex;
   align-items: center;
-  position: relative;
+  justify-content: center;
 }
 
 .input {
   width: 400px;
   border-radius: 15px;
-  padding: 8px 8px 8px 50px;
+  padding: 8px 8px 8px 20px;
   font-size: 1.5rem;
   border: 2px solid rgb(50, 89, 49);
 }
@@ -35,13 +35,4 @@
 
 .btn:hover {
   background-color: rgb(75, 132, 74);
-}
-
-.svg {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  left: 10px;
-  top: 13%;
-  color: rgba(108, 117, 104, 0.6);
 }
