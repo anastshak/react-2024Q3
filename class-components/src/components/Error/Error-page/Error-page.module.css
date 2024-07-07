@@ -1,0 +1,29 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.heading {
+  color: black;
+}
+
+.reloadBtn {
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: rgb(50, 89, 49);
+  border: none;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reloadBtn:hover {
+  background-color: rgb(75, 132, 74);
+}
