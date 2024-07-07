@@ -26,7 +26,7 @@ export default class Search extends React.Component {
 
     return (
       <>
-        <section className={styles.search}>
+        <div className={styles.search}>
           <input
             type="text"
             className={styles.input}
@@ -37,7 +37,7 @@ export default class Search extends React.Component {
           <button type="button" className={styles.btn} onClick={this.searchCharacter}>
             Search
           </button>
-        </section>
+        </div>
       </>
     );
   }

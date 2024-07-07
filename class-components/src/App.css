@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+.header {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
 .cards {
   margin-top: 50px;
   display: flex;

@@ -4,6 +4,7 @@ import './App.css';
 import Search from './components/Search/Search';
 import Card, { Character } from './components/Card/Card';
 import { fetchData } from './services/api';
+import { ErrorButton } from './components/Error/Error-button/Error-button';
 
 class App extends React.Component {
   state = {
@@ -17,12 +18,15 @@ class App extends React.Component {
   render(): ReactNode {
     return (
       <>
-        <Search />
-        <section className="cards">
+        <header className="header">
+          <Search />
+          <ErrorButton />
+        </header>
+        <main className="cards">
           {this.state.cards.map((card: Character) => (
             <Card key={card.name} card={card} />
           ))}
-        </section>
+        </main>
       </>
     );
   }
