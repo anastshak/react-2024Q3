@@ -2,13 +2,20 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import styles from './Search.module.css';
 
-export default function Search(): JSX.Element {
-  const [inputValue, setInputValue] = useState('');
+function useLocalStorage(key: string): [string, React.Dispatch<React.SetStateAction<string>>] {
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return localStorage.getItem(key) || '';
+  });
 
   useEffect(() => {
-    const storedQuery = localStorage.getItem('searchValue') || '';
-    setInputValue(storedQuery);
-  }, []);
+    localStorage.setItem(key, searchQuery);
+  }, [searchQuery, key]);
+
+  return [searchQuery, setSearchQuery];
+}
+
+export default function Search(): JSX.Element {
+  const [inputValue, setInputValue] = useLocalStorage('searchValue');
 
   const searchCharacter = async () => {
     localStorage.setItem('searchValue', inputValue);
