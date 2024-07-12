@@ -1,44 +1,34 @@
-import React from 'react';
-import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 import styles from './Search.module.css';
 
-export default class Search extends React.Component {
-  state = {
-    cards: [],
-    value: localStorage.getItem('searchValue') || '',
-  };
+export default function Search(): JSX.Element {
+  const [inputValue, setInputValue] = useState('');
 
-  componentWillUnmount() {
-    localStorage.setItem('searchValue', this.state.value);
-  }
+  useEffect(() => {
+    const storedQuery = localStorage.getItem('searchValue') || '';
+    setInputValue(storedQuery);
+  }, []);
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ value: e.target.value });
-  };
-
-  searchCharacter = async () => {
-    this.componentWillUnmount();
+  const searchCharacter = async () => {
+    localStorage.setItem('searchValue', inputValue);
     window.location.reload();
   };
 
-  render(): ReactNode {
-    const { value } = this.state;
-
-    return (
-      <>
-        <div className={styles.search}>
-          <input
-            type="text"
-            className={styles.input}
-            placeholder="Please, enter your request"
-            value={value}
-            onChange={this.handleChange}
-          ></input>
-          <button type="button" className={styles.btn} onClick={this.searchCharacter}>
-            Search
-          </button>
-        </div>
-      </>
-    );
-  }
+  return (
+    <>
+      <div className={styles.search}>
+        <input
+          type="text"
+          className={styles.input}
+          placeholder="Please, enter your request"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        ></input>
+        <button type="button" className={styles.btn} onClick={searchCharacter}>
+          Search
+        </button>
+      </div>
+    </>
+  );
 }

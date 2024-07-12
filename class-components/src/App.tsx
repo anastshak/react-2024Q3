@@ -1,5 +1,5 @@
-import React from 'react';
-import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 import './App.css';
 import Search from './components/Search/Search';
 import Card, { Character } from './components/Card/Card';
@@ -7,37 +7,37 @@ import { fetchData } from './services/api';
 import { ErrorButton } from './components/Error/Error-button/Error-button';
 import Loader from './components/Loader/Loader';
 
-class App extends React.Component {
-  state = {
-    cards: [],
-    loading: true,
-  };
+export function App(): JSX.Element {
+  const arr: Character[] = [];
+  const [isLoading, setIsLoading] = useState(true);
+  const [cards, setCards] = useState(arr);
 
-  componentDidMount(): void {
-    this.setState({ loading: true });
-    fetchData().then((data) => this.setState({ cards: data, loading: false }));
-  }
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData().then((data) => {
+      setCards(data);
+      setIsLoading(false);
+    });
+  }, []);
 
-  render(): ReactNode {
-    return (
-      <>
-        <header className="header">
-          <Search />
-          <ErrorButton />
-        </header>
+  return (
+    <>
+      <header className="header">
+        <Search />
+        <ErrorButton />
+      </header>
 
-        {this.state.loading ? (
-          <Loader />
-        ) : (
-          <main className="cards">
-            {this.state.cards.map((card: Character) => (
-              <Card key={card.name} card={card} />
-            ))}
-          </main>
-        )}
-      </>
-    );
-  }
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <main className="cards">
+          {cards.map((card: Character) => (
+            <Card key={card.name} card={card} />
+          ))}
+        </main>
+      )}
+    </>
+  );
 }
 
 export default App;
