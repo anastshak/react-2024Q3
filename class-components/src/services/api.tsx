@@ -9,12 +9,12 @@ export type Data = {
   results: Character[];
 };
 
-export async function getAllCharacters(): Promise<Data> {
-  const url = `${BASE_URL}`;
+export async function getAllCharacters(pageNumber: number = 1): Promise<Data> {
+  const url = `${BASE_URL}?page=${pageNumber}`;
   const response = await fetch(url, { method: 'GET' });
-  const allCharacters = await response.json();
+  const data = await response.json();
 
-  return allCharacters;
+  return data;
 }
 
 export async function getSearchResult(query: string): Promise<Data> {
@@ -25,12 +25,12 @@ export async function getSearchResult(query: string): Promise<Data> {
   return result;
 }
 
-export async function fetchData() {
+export async function fetchData(pageNumber: number = 1) {
   let cards: Character[] = [];
   const value: string | null = localStorage.getItem('searchValue');
   if (value === '') {
     try {
-      const data: Data = await getAllCharacters();
+      const data: Data = await getAllCharacters(pageNumber);
       cards = data.results;
     } catch (err) {
       if (err instanceof Error) {
