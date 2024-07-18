@@ -1,25 +1,18 @@
-import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
+import useLocalStorage from '../../hooks/useLocalStorage';
+
 import styles from './Search.module.css';
 
-function useLocalStorage(key: string): [string, React.Dispatch<React.SetStateAction<string>>] {
-  const [searchQuery, setSearchQuery] = useState(() => {
-    return localStorage.getItem(key) || '';
-  });
+type Props = {
+  onSearch: (query: string, page: number) => void;
+};
 
-  useEffect(() => {
-    localStorage.setItem(key, searchQuery);
-  }, [searchQuery, key]);
-
-  return [searchQuery, setSearchQuery];
-}
-
-export default function Search(): JSX.Element {
+export default function Search({ onSearch }: Props): JSX.Element {
   const [inputValue, setInputValue] = useLocalStorage('searchValue');
 
   const searchCharacter = async () => {
     localStorage.setItem('searchValue', inputValue);
-    window.location.reload();
+    onSearch(inputValue, 1);
   };
 
   return (

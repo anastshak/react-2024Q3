@@ -5,3 +5,8 @@
   flex-wrap: wrap;
   gap: 20px;
 }
+
+.noResult {
+  margin-top: 50px;
+  font-size: 2rem;
+}

@@ -1,15 +1,10 @@
 import type { JSX } from 'react';
+import { Character } from '../../types/types';
+
 import style from './Card.module.css';
 
 type Props = {
   card: Character;
-};
-
-export type Character = {
-  name: string;
-  gender: string;
-  height: number;
-  birth_year: string;
 };
 
 export default function Card({ card }: Props): JSX.Element {
