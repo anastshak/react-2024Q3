@@ -18,5 +18,14 @@
 }
 
 .pagination button:hover {
-  box-shadow: 5px 5px 25px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.pagination button:disabled {
+  border: 2px solid rgba(50, 89, 49, 0.697);
+  cursor: default;
+}
+
+.pagination button:disabled:hover {
+  box-shadow: none;
 }
