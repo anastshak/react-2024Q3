@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import type { JSX } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Search from '../../components/Search/Search';
 import { ErrorButton } from '../../components/Error/Error-button/Error-button';
 import CardList from '../../components/Card-list/Card-list';
@@ -10,7 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import style from './Home.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 
-export default function HomePage(): ReactNode {
+export default function HomePage(): JSX.Element {
   const arr: Character[] = [];
   const [cards, setCards] = useState(arr);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,8 +61,10 @@ export default function HomePage(): ReactNode {
         <Loader />
       ) : (
         <>
-          <CardList cards={cards} />
-          <Pagination currentPage={page} totalPages={totalPages} changePage={onChangePage} />
+          <section>
+            <CardList cards={cards} />
+            <Pagination currentPage={page} totalPages={totalPages} changePage={onChangePage} />
+          </section>
         </>
       )}
     </>
