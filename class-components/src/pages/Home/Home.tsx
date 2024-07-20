@@ -1,19 +1,19 @@
 import type { JSX } from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import Search from '../../components/Search/Search';
 import { ErrorButton } from '../../components/Error/Error-button/Error-button';
 import CardList from '../../components/Card-list/Card-list';
 import { Character } from '../../types/types';
 import { fetchData } from '../../services/api';
 import Loader from '../../components/Loader/Loader';
-import { useSearchParams } from 'react-router-dom';
-
-import style from './Home.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 
+import style from './Home.module.css';
+
 export default function HomePage(): JSX.Element {
-  const arr: Character[] = [];
-  const [cards, setCards] = useState(arr);
+  const [cards, setCards] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
@@ -45,7 +45,7 @@ export default function HomePage(): JSX.Element {
       setPage(currPage);
       onSearch(searchQuery, currPage);
     }
-  }, [searchParams, onSearch]);
+  }, [searchParams, onSearch, page]);
 
   const onChangePage = (pageNumber: number) => {
     setSearchParams({ search: searchParams.get('search') || '', page: pageNumber.toString() });
@@ -58,7 +58,7 @@ export default function HomePage(): JSX.Element {
         <ErrorButton />
       </header>
       {isLoading ? (
-        <Loader />
+        <Loader data-testid="loader" />
       ) : (
         <>
           <section>

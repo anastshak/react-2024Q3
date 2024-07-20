@@ -1,0 +1,125 @@
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { afterEach, describe, vi, it, expect } from 'vitest';
+import HomePage from './Home';
+import { fetchData } from '../../services/api';
+import { Character } from '../../types/types';
+
+vi.mock('../../services/api', () => ({
+  fetchData: vi.fn(),
+}));
+
+const mockedFetchData = fetchData as ReturnType<typeof vi.fn>;
+
+describe('HomePage Component', () => {
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it('should render without errors', () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+    expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
+  });
+
+  it('should perform a search and display results', async () => {
+    const mockData = {
+      cards: [{ name: 'Luke Skywalker' } as Character, { name: 'Darth Vader' } as Character],
+      totalPages: 1,
+    };
+    mockedFetchData.mockResolvedValue(mockData);
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const searchInput = screen.getByRole('textbox');
+    const searchButton = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(searchInput, { target: { value: 'Luke' } });
+    fireEvent.click(searchButton);
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+      expect(screen.getByText('Darth Vader')).toBeInTheDocument();
+    });
+  });
+
+  it('should display loader while fetching data', async () => {
+    mockedFetchData.mockImplementation(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(
+            () =>
+              resolve({
+                cards: [],
+                totalPages: 1,
+              }),
+            100
+          )
+        )
+    );
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    const searchInput = screen.getByRole('textbox');
+    const searchButton = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(searchInput, { target: { value: 'Luke' } });
+    fireEvent.click(searchButton);
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should update the page number on pagination click', async () => {
+    const mockData = {
+      cards: [{ name: 'Luke Skywalker' } as Character],
+      totalPages: 2,
+    };
+    mockedFetchData.mockResolvedValue(mockData);
+
+    render(
+      <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
+    });
+
+    const nextPageButton = screen.getByRole('button', { name: /→/i });
+    expect(nextPageButton).toBeInTheDocument();
+
+    fireEvent.click(nextPageButton);
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 2);
+    });
+  });
+});
