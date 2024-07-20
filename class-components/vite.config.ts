@@ -14,6 +14,8 @@ export default defineConfig({
     coverage: {
       all: true,
       enabled: true,
+      include: ['src/**/*'],
+      exclude: ['**/.eslintrc.cjs', 'vite.config.ts', 'dist'],
       provider: 'v8',
       reporter: ['text'],
     },
