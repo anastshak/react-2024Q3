@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { afterEach, describe, vi, it, expect } from 'vitest';
+import { afterEach, describe, vi, test, expect } from 'vitest';
 import HomePage from './Home';
 import { fetchData } from '../../services/api';
 import { Character } from '../../types/types';
@@ -16,7 +16,7 @@ describe('HomePage Component', () => {
     vi.resetAllMocks();
   });
 
-  it('should render without errors', () => {
+  test('should render without errors', () => {
     render(
       <MemoryRouter>
         <HomePage />
@@ -25,7 +25,7 @@ describe('HomePage Component', () => {
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
-  it('should perform a search and display results', async () => {
+  test('should perform a search and display results', async () => {
     const mockData = {
       cards: [{ name: 'Luke Skywalker' } as Character, { name: 'Darth Vader' } as Character],
       totalPages: 1,
@@ -56,7 +56,7 @@ describe('HomePage Component', () => {
     });
   });
 
-  it('should display loader while fetching data', async () => {
+  test('should display loader while fetching data', async () => {
     mockedFetchData.mockImplementation(
       () =>
         new Promise((resolve) =>
@@ -94,7 +94,7 @@ describe('HomePage Component', () => {
     });
   });
 
-  it('should update the page number on pagination click', async () => {
+  test('should update the page number on pagination click', async () => {
     const mockData = {
       cards: [{ name: 'Luke Skywalker' } as Character],
       totalPages: 2,

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 import Search from './Search';
 
 describe('Search component', () => {
@@ -10,7 +10,7 @@ describe('Search component', () => {
     onSearchMock.mockClear();
   });
 
-  it('saves the entered value to local storage when Search button is clicked', () => {
+  test('saves the entered value to local storage when Search button is clicked', () => {
     render(<Search onSearch={onSearchMock} />);
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Please, enter your request');
@@ -25,7 +25,7 @@ describe('Search component', () => {
     expect(onSearchMock).toHaveBeenCalledWith('Luke Skywalker', 1);
   });
 
-  it('retrieves value from local storage upon mounting', () => {
+  test('retrieves value from local storage upon mounting', () => {
     localStorage.setItem('searchValue', 'Stored Value');
 
     render(<Search onSearch={onSearchMock} />);
