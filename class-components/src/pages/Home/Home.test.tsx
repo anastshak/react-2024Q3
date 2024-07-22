@@ -27,7 +27,10 @@ describe('HomePage Component', () => {
 
   test('should perform a search and display results', async () => {
     const mockData = {
-      cards: [{ name: 'Luke Skywalker' } as Character, { name: 'Darth Vader' } as Character],
+      cards: [
+        { name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character,
+        { name: 'Darth Vader', url: 'https://swapi.dev/api/people/4/' } as Character,
+      ],
       totalPages: 1,
     };
     mockedFetchData.mockResolvedValue(mockData);
@@ -96,7 +99,7 @@ describe('HomePage Component', () => {
 
   test('should update the page number on pagination click', async () => {
     const mockData = {
-      cards: [{ name: 'Luke Skywalker' } as Character],
+      cards: [{ name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character],
       totalPages: 2,
     };
     mockedFetchData.mockResolvedValue(mockData);
@@ -120,6 +123,67 @@ describe('HomePage Component', () => {
 
     await waitFor(() => {
       expect(mockedFetchData).toHaveBeenCalledWith('Luke', 2);
+    });
+  });
+
+  test('should update the page number on pagination click', async () => {
+    const mockData = {
+      cards: [{ name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character],
+      totalPages: 2,
+    };
+    mockedFetchData.mockResolvedValue(mockData);
+
+    render(
+      <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
+    });
+
+    const nextPageButton = screen.getByRole('button', { name: /→/i });
+    expect(nextPageButton).toBeInTheDocument();
+
+    fireEvent.click(nextPageButton);
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 2);
+    });
+  });
+
+  test('should display and close card details', async () => {
+    const mockData = {
+      cards: [{ name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character],
+      totalPages: 1,
+    };
+    mockedFetchData.mockResolvedValue(mockData);
+
+    render(
+      <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
+    });
+
+    const cardElement = screen.getByText('Luke Skywalker');
+    fireEvent.click(cardElement);
+
+    const closeButton = await screen.findByRole('button', { name: /close/i });
+    expect(closeButton).toBeInTheDocument();
+
+    fireEvent.click(closeButton);
+
+    await waitFor(() => {
+      expect(closeButton).not.toBeInTheDocument();
     });
   });
 });

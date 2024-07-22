@@ -3,6 +3,18 @@ export type Character = {
   gender: string;
   height: number;
   birth_year: string;
+  url: string;
+};
+
+export type CharacterDetails = {
+  name: string;
+  height: number;
+  mass: number;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
 };
 
 export interface DataFetch {

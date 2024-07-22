@@ -3,12 +3,14 @@ import Card from '../Card/Card';
 import { Character } from '../../types/types';
 
 import style from './Card-list.module.css';
+import { idFromUrl } from '../../utils/utils';
 
 type Props = {
   cards: Character[];
+  handleCardClick: (id: string) => void;
 };
 
-export default function CardList({ cards }: Props): JSX.Element {
+export default function CardList({ cards, handleCardClick }: Props): JSX.Element {
   if (cards.length === 0) {
     return <h1 className={style.noResult}>No characters found</h1>;
   }
@@ -17,7 +19,7 @@ export default function CardList({ cards }: Props): JSX.Element {
     <>
       <main className={style.cardList}>
         {cards.map((card: Character) => (
-          <Card key={card.name} card={card} />
+          <Card key={card.name} card={card} onCardClick={() => handleCardClick(idFromUrl(card.url) || '')} />
         ))}
       </main>
     </>

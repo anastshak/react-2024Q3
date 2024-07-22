@@ -2,14 +2,17 @@ import type { JSX } from 'react';
 import { Character } from '../../types/types';
 
 import style from './Card.module.css';
+import { idFromUrl } from '../../utils/utils';
 
 type Props = {
   card: Character;
+  onCardClick: (id: string) => void;
 };
 
-export default function Card({ card }: Props): JSX.Element {
+export default function Card({ card, onCardClick }: Props): JSX.Element {
+  const id = idFromUrl(card.url);
   return (
-    <div className={style.card}>
+    <div className={style.card} onClick={() => onCardClick(id || '')} data-testid="card">
       <div className={style.info}>
         Name: <span>{card.name}</span>
       </div>

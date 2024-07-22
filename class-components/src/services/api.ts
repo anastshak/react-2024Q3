@@ -16,3 +16,14 @@ export async function fetchData(searchQuery: string, page: number = 1): Promise<
       throw error;
     });
 }
+
+export async function fetchDetails(id: string) {
+  return fetch(`${BASE_URL}${id}/`)
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+      throw error;
+    });
+}

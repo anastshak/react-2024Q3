@@ -3,4 +3,20 @@
   justify-content: center;
   gap: 50px;
   flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.main {
+  display: flex;
+  gap: 50px;
+}
+
+.mainSide {
+  min-width: 70%;
+}
+
+.detailSide {
+  padding-top: 100px;
+  border-left: solid 2px rgb(50, 89, 49);
+  width: 30%;
 }
