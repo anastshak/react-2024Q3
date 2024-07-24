@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import CardList from './Card-list';
 import { Character } from '../../types/types';
+import { ThemeProvider } from '../../context/themeContext';
 
 describe('CardList component', () => {
   const mockCharacters: Character[] = [
@@ -17,8 +18,12 @@ describe('CardList component', () => {
 
   const mockHandleCardClick = vi.fn();
 
+  const renderWithTheme = (ui: JSX.Element) => {
+    return render(<ThemeProvider>{ui}</ThemeProvider>);
+  };
+
   test('renders the specified number of cards', () => {
-    render(<CardList cards={mockCharacters} handleCardClick={mockHandleCardClick} />);
+    renderWithTheme(<CardList cards={mockCharacters} handleCardClick={mockHandleCardClick} />);
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(screen.getByText('Darth Vader')).toBeInTheDocument();
     expect(screen.getAllByText(/Skywalker|Vader/)).toHaveLength(2);

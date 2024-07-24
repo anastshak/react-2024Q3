@@ -3,6 +3,7 @@ import { describe, test, expect, vi } from 'vitest';
 import CardDetails from './Card-Details';
 import { fetchDetails } from '../../services/api';
 import { CharacterDetails } from '../../types/types';
+import { ThemeProvider } from '../../context/themeContext';
 
 vi.mock('../../services/api', () => ({
   fetchDetails: vi.fn(),
@@ -22,15 +23,19 @@ describe('CardDetails Component', () => {
     eye_color: 'blue',
   };
 
+  const renderWithTheme = (ui: JSX.Element) => {
+    return render(<ThemeProvider>{ui}</ThemeProvider>);
+  };
+
   test('should display loading state initially', () => {
-    render(<CardDetails id="1" />);
+    renderWithTheme(<CardDetails id="1" />);
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 
   test('should display character details when fetched successfully', async () => {
     mockedFetchDetails.mockResolvedValue(mockDetails);
 
-    render(<CardDetails id="1" />);
+    renderWithTheme(<CardDetails id="1" />);
 
     await waitFor(() => {
       expect(
@@ -49,7 +54,7 @@ describe('CardDetails Component', () => {
   test('should display error message when fetch fails', async () => {
     mockedFetchDetails.mockRejectedValue(new Error('Error fetching details'));
 
-    render(<CardDetails id="1" />);
+    renderWithTheme(<CardDetails id="1" />);
 
     await waitFor(() => {
       expect(screen.getByText('No details available')).toBeInTheDocument();

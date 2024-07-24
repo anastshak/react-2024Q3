@@ -4,6 +4,7 @@ import { afterEach, describe, vi, test, expect } from 'vitest';
 import HomePage from './Home';
 import { fetchData } from '../../services/api';
 import { Character } from '../../types/types';
+import { ThemeProvider } from '../../context/themeContext';
 
 vi.mock('../../services/api', () => ({
   fetchData: vi.fn(),
@@ -12,12 +13,16 @@ vi.mock('../../services/api', () => ({
 const mockedFetchData = fetchData as ReturnType<typeof vi.fn>;
 
 describe('HomePage Component', () => {
+  const renderWithTheme = (ui: JSX.Element) => {
+    return render(<ThemeProvider>{ui}</ThemeProvider>);
+  };
+
   afterEach(() => {
     vi.resetAllMocks();
   });
 
   test('should render without errors', () => {
-    render(
+    renderWithTheme(
       <MemoryRouter>
         <HomePage />
       </MemoryRouter>
@@ -35,7 +40,7 @@ describe('HomePage Component', () => {
     };
     mockedFetchData.mockResolvedValue(mockData);
 
-    render(
+    renderWithTheme(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -74,7 +79,7 @@ describe('HomePage Component', () => {
         )
     );
 
-    render(
+    renderWithTheme(
       <MemoryRouter>
         <HomePage />
       </MemoryRouter>
@@ -104,7 +109,7 @@ describe('HomePage Component', () => {
     };
     mockedFetchData.mockResolvedValue(mockData);
 
-    render(
+    renderWithTheme(
       <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -133,7 +138,7 @@ describe('HomePage Component', () => {
     };
     mockedFetchData.mockResolvedValue(mockData);
 
-    render(
+    renderWithTheme(
       <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -162,7 +167,7 @@ describe('HomePage Component', () => {
     };
     mockedFetchData.mockResolvedValue(mockData);
 
-    render(
+    renderWithTheme(
       <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -183,7 +188,7 @@ describe('HomePage Component', () => {
     fireEvent.click(closeButton);
 
     await waitFor(() => {
-      expect(closeButton).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument();
     });
   });
 });
