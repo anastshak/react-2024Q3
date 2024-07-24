@@ -1,9 +1,13 @@
+.header,
+.main {
+  padding: 2rem;
+}
+
 .header {
   display: flex;
   justify-content: center;
   gap: 50px;
   flex-wrap: wrap;
-  margin-bottom: 50px;
 }
 
 .main {
@@ -17,6 +21,15 @@
 
 .detailSide {
   padding-top: 100px;
-  border-left: solid 2px rgb(50, 89, 49);
+  border-left: solid 2px var(--green-border);
   width: 30%;
+}
+
+.dark {
+  background-color: var(--dark-bg-color);
+  color: var(--white-text);
+}
+
+.dark .detailSide {
+  border-color: var(--white-border);
 }

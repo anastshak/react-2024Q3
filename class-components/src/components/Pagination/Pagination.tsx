@@ -1,4 +1,7 @@
 import { JSX } from 'react';
+import classnames from 'classnames';
+import { useTheme } from '../../context/useTheme';
+
 import style from './Pagination.module.css';
 
 type Props = {
@@ -8,6 +11,8 @@ type Props = {
 };
 
 export default function Pagination({ currentPage, totalPages, changePage }: Props): JSX.Element {
+  const { theme } = useTheme();
+
   const onPreviousPage = () => {
     if (currentPage > 1) {
       changePage(currentPage - 1);
@@ -21,7 +26,7 @@ export default function Pagination({ currentPage, totalPages, changePage }: Prop
   };
 
   return (
-    <div className={style.pagination}>
+    <div className={classnames(style.pagination, { [style.dark]: theme === 'light' })}>
       <button type="button" disabled={currentPage === 1} className={style.prev} onClick={onPreviousPage}>
         ←
       </button>

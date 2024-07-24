@@ -1,8 +1,10 @@
 import type { JSX } from 'react';
 import { Character } from '../../types/types';
+import { idFromUrl } from '../../utils/utils';
+import { useTheme } from '../../context/useTheme';
+import classnames from 'classnames';
 
 import style from './Card.module.css';
-import { idFromUrl } from '../../utils/utils';
 
 type Props = {
   card: Character;
@@ -11,8 +13,14 @@ type Props = {
 
 export default function Card({ card, onCardClick }: Props): JSX.Element {
   const id = idFromUrl(card.url);
+  const { theme } = useTheme();
+
   return (
-    <div className={style.card} onClick={() => onCardClick(id || '')} data-testid="card">
+    <div
+      className={classnames(style.card, { [style.dark]: theme === 'light' })}
+      onClick={() => onCardClick(id || '')}
+      data-testid="card"
+    >
       <div className={style.info}>
         Name: <span>{card.name}</span>
       </div>

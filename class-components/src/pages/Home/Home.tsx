@@ -10,6 +10,9 @@ import { fetchData } from '../../services/api';
 import Loader from '../../components/Loader/Loader';
 import Pagination from '../../components/Pagination/Pagination';
 import CardDetails from '../../components/Card-Details/Card-Details';
+import ThemeSwitcher from '../../components/Theme-Switcher/Theme-Switcher';
+import { useTheme } from '../../context/useTheme';
+import classnames from 'classnames';
 
 import style from './Home.module.css';
 
@@ -21,6 +24,8 @@ export default function HomePage(): JSX.Element {
   const [cardId, setCardId] = useState<string | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { theme } = useTheme();
 
   const onSearch = useCallback(
     async (searchQuery: string, page: number = 1) => {
@@ -71,12 +76,13 @@ export default function HomePage(): JSX.Element {
 
   return (
     <>
-      <header className={style.header}>
+      <header className={classnames(style.header, { [style.dark]: theme === 'light' })}>
         <Search onSearch={onSearch} />
         <ErrorButton />
+        <ThemeSwitcher />
       </header>
       <Outlet />
-      <section className={style.main}>
+      <section className={classnames(style.main, { [style.dark]: theme === 'light' })}>
         {isLoading ? (
           <Loader data-testid="loader" />
         ) : (

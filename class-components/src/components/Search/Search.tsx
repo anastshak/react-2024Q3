@@ -1,5 +1,7 @@
 import type { JSX } from 'react';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useTheme } from '../../context/useTheme';
+import classnames from 'classnames';
 
 import styles from './Search.module.css';
 
@@ -10,6 +12,8 @@ type Props = {
 export default function Search({ onSearch }: Props): JSX.Element {
   const [inputValue, setInputValue] = useLocalStorage('searchValue');
 
+  const { theme } = useTheme();
+
   const searchCharacter = async () => {
     localStorage.setItem('searchValue', inputValue);
     onSearch(inputValue, 1);
@@ -17,7 +21,7 @@ export default function Search({ onSearch }: Props): JSX.Element {
 
   return (
     <>
-      <div className={styles.search}>
+      <div className={classnames(styles.search, { [styles.dark]: theme === 'light' })}>
         <input
           type="text"
           className={styles.input}
