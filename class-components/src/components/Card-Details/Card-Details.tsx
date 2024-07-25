@@ -1,9 +1,7 @@
 import type { JSX } from 'react';
-import { useEffect, useState } from 'react';
-import { fetchDetails } from '../../services/api';
-import { CharacterDetails } from '../../types/types';
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
+import { useGetCharacterByIdQuery } from '../../store/swapiApi';
 
 import style from './Card-Details.module.css';
 
@@ -12,29 +10,16 @@ type Props = {
 };
 
 export default function CardDetails({ id }: Props): JSX.Element {
-  const [details, setDetails] = useState<CharacterDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: details, error, isLoading } = useGetCharacterByIdQuery(id || '');
 
   const { theme } = useTheme();
 
-  useEffect(() => {
-    const fetchDetailsData = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchDetails(id);
-        setDetails(data);
-      } catch (error) {
-        console.error('Error fetching details:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDetailsData();
-  }, [id]);
-
   if (isLoading) {
     return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error fetching details</p>;
   }
 
   if (!details) {

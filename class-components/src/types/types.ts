@@ -21,3 +21,8 @@ export interface DataFetch {
   cards: Character[];
   totalPages: number;
 }
+
+export interface CharactersPerPage {
+  count: number;
+  results: Character[];
+}

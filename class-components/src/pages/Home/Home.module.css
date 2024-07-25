@@ -12,8 +12,9 @@
 
 .main {
   display: flex;
+  justify-content: center;
   gap: 50px;
-  height: inherit;
+  height: max-content;
 }
 
 .mainSide {
@@ -21,7 +22,7 @@
 }
 
 .detailSide {
-  padding-top: 100px;
+  padding: 100px 0 0 20px;
   border-left: solid 2px var(--green-border);
   width: 30%;
 }
