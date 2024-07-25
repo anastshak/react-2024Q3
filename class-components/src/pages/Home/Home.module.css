@@ -13,6 +13,7 @@
 .main {
   display: flex;
   gap: 50px;
+  height: inherit;
 }
 
 .mainSide {
