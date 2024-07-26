@@ -29,17 +29,21 @@ export default function HomePage(): JSX.Element {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const cardDetailsId = searchParams.get('details');
 
-  const { data, error, isLoading } = useGetCharactersQuery({ searchQuery, page });
+  const { data, error, isFetching } = useGetCharactersQuery({ searchQuery, page });
 
   useEffect(() => {
-    dispatch(setLoading(isLoading));
+    if (isFetching) {
+      dispatch(setLoading(true));
+    } else {
+      dispatch(setLoading(false));
+    }
     if (data) {
       dispatch(setCharacters(data));
     }
     if (cardDetailsId) {
       setCardId(cardDetailsId);
     }
-  }, [data, cardDetailsId, isLoading, dispatch]);
+  }, [data, cardDetailsId, isFetching, dispatch]);
 
   const onSearch = useCallback(
     (searchQuery: string, page: number = 1) => {
@@ -71,7 +75,7 @@ export default function HomePage(): JSX.Element {
       </header>
       <Outlet />
       <section className={classnames(style.main, { [style.dark]: theme === 'light' })}>
-        {isLoading ? (
+        {isFetching ? (
           <Loader data-testid="loader" />
         ) : error ? (
           <p>Error: {error.message}</p>
