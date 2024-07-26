@@ -1,9 +1,9 @@
 import type { JSX } from 'react';
 import Card from '../Card/Card';
 import { Character } from '../../types/types';
+import { idFromUrl } from '../../utils/utils';
 
 import style from './Card-list.module.css';
-import { idFromUrl } from '../../utils/utils';
 
 type Props = {
   cards: Character[];

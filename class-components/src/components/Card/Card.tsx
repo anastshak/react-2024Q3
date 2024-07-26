@@ -1,11 +1,13 @@
-import type { JSX } from 'react';
+import { JSX } from 'react';
 import { Character } from '../../types/types';
 import { idFromUrl } from '../../utils/utils';
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
+import Checkbox from '../Checkbox/Checkbox';
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
+import { toggleSelected } from '../../store/selectedCharactersSlice';
 
 import style from './Card.module.css';
-import Checkbox from '../Checkbox/Checkbox';
 
 type Props = {
   card: Character;
@@ -13,8 +15,15 @@ type Props = {
 };
 
 export default function Card({ card, onCardClick }: Props): JSX.Element {
-  const id = idFromUrl(card.url);
+  const id = idFromUrl(card.url) as string;
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const selectedCharacters = useAppSelector((state) => state.selected.selectedCharacters);
+  const isSelected = selectedCharacters.some((selectedCard) => selectedCard.url === card.url);
+
+  const handleSelectCard = () => {
+    dispatch(toggleSelected({ id, card }));
+  };
 
   return (
     <div className={classnames(style.card, { [style.dark]: theme === 'light' })} data-testid="card">
@@ -33,7 +42,7 @@ export default function Card({ card, onCardClick }: Props): JSX.Element {
         </div>
       </div>
       <div className={style.checkboxBox}>
-        <Checkbox card={card} selectCard={() => console.log(id)} />
+        <Checkbox card={card} selectCard={handleSelectCard} isSelected={isSelected} />
       </div>
     </div>
   );

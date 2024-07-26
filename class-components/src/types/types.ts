@@ -1,12 +1,13 @@
-export type Character = {
+export interface Character {
   name: string;
   gender: string;
   height: number;
   birth_year: string;
   url: string;
-};
+  isSelected?: boolean;
+}
 
-export type CharacterDetails = {
+export interface CharacterDetails {
   name: string;
   height: number;
   mass: number;
@@ -15,7 +16,7 @@ export type CharacterDetails = {
   eye_color: string;
   birth_year: string;
   gender: string;
-};
+}
 
 export interface DataFetch {
   cards: Character[];
