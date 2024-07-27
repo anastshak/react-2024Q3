@@ -11,5 +11,18 @@
 
 .info {
   font-weight: bold;
-  color: rgb(50, 89, 49);
+  color: var(--green-text);
+}
+
+.info span {
+  font-weight: lighter;
+  color: var(--black-text);
+}
+
+.dark .info {
+  color: var(--white-text);
+}
+
+.dark .info span {
+  color: var(--white-text);
 }

@@ -1,24 +1,36 @@
 .card {
   border-radius: 10px;
   font-size: 1.25rem;
-  border: 2px solid rgb(50, 89, 49);
-  width: 250px;
+  border: 2px solid var(--green-border);
+  width: 270px;
   padding: 15px 25px;
   text-align: start;
   transition: all 0.4s ease-in-out;
+
+  display: flex;
+  justify-content: space-between;
 }
 
 .card:hover {
-  box-shadow: 5px 5px 25px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 25px 5px var(--black-box-shadow);
   cursor: pointer;
 }
 
 .info {
   font-weight: bold;
-  color: rgb(50, 89, 49);
+  color: var(--green-text);
 }
 
 .info span {
   font-weight: lighter;
-  color: black;
+  color: var(--black-text);
+}
+
+.dark {
+  background-color: var(--light-bg-color);
+}
+
+.dark.card:hover {
+  box-shadow: 5px 5px 25px 5px var(--white-box-shadow);
+  cursor: pointer;
 }

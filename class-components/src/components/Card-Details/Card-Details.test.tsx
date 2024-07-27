@@ -1,20 +1,20 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import CardDetails from './Card-Details';
-import { fetchDetails } from '../../services/api';
-import { CharacterDetails } from '../../types/types';
+import { useGetCharacterByIdQuery } from '../../store/swapiApi';
+import { ThemeProvider } from '../../context/themeContext';
 
-vi.mock('../../services/api', () => ({
-  fetchDetails: vi.fn(),
+vi.mock('../../store/swapiApi', () => ({
+  useGetCharacterByIdQuery: vi.fn(),
 }));
 
-const mockedFetchDetails = fetchDetails as ReturnType<typeof vi.fn>;
+const mockedUseGetCharacterByIdQuery = useGetCharacterByIdQuery as ReturnType<typeof vi.fn>;
 
 describe('CardDetails Component', () => {
-  const mockDetails: CharacterDetails = {
+  const mockDetails = {
     name: 'Luke Skywalker',
-    height: 172,
-    mass: 77,
+    height: '172',
+    mass: '77',
     birth_year: '19BBY',
     gender: 'male',
     hair_color: 'blond',
@@ -22,37 +22,54 @@ describe('CardDetails Component', () => {
     eye_color: 'blue',
   };
 
+  const renderWithTheme = (ui: JSX.Element) => {
+    return render(<ThemeProvider>{ui}</ThemeProvider>);
+  };
+
   test('should display loading state initially', () => {
-    render(<CardDetails id="1" />);
+    mockedUseGetCharacterByIdQuery.mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: true,
+    });
+
+    renderWithTheme(<CardDetails id="1" />);
+
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 
   test('should display character details when fetched successfully', async () => {
-    mockedFetchDetails.mockResolvedValue(mockDetails);
+    mockedUseGetCharacterByIdQuery.mockReturnValue({
+      data: mockDetails,
+      error: null,
+      isLoading: false,
+    });
 
-    render(<CardDetails id="1" />);
+    renderWithTheme(<CardDetails id="1" />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText((_content, element) => element?.textContent === 'Name: Luke Skywalker')
-      ).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Height: 172')).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Mass: 77')).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Birth year: 19BBY')).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Gender: male')).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Hair Color: blond')).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Skin Color: fair')).toBeInTheDocument();
-      expect(screen.getByText((_content, element) => element?.textContent === 'Eye Color: blue')).toBeInTheDocument();
+      expect(screen.getByText(/Name:/i)).toHaveTextContent('Name: Luke Skywalker');
+      expect(screen.getByText(/Height:/i)).toHaveTextContent('Height: 172');
+      expect(screen.getByText(/Mass:/i)).toHaveTextContent('Mass: 77');
+      expect(screen.getByText(/Birth year:/i)).toHaveTextContent('Birth year: 19BBY');
+      expect(screen.getByText(/Gender:/i)).toHaveTextContent('Gender: male');
+      expect(screen.getByText(/Hair Color:/i)).toHaveTextContent('Hair Color: blond');
+      expect(screen.getByText(/Skin Color:/i)).toHaveTextContent('Skin Color: fair');
+      expect(screen.getByText(/Eye Color:/i)).toHaveTextContent('Eye Color: blue');
     });
   });
 
   test('should display error message when fetch fails', async () => {
-    mockedFetchDetails.mockRejectedValue(new Error('Error fetching details'));
+    mockedUseGetCharacterByIdQuery.mockReturnValue({
+      data: null,
+      error: new Error('Error fetching details'),
+      isLoading: false,
+    });
 
-    render(<CardDetails id="1" />);
+    renderWithTheme(<CardDetails id="1" />);
 
     await waitFor(() => {
-      expect(screen.getByText('No details available')).toBeInTheDocument();
+      expect(screen.getByText('Error fetching details')).toBeInTheDocument();
     });
   });
 });

@@ -1,0 +1,92 @@
+.flyout {
+  max-width: 300px;
+  padding: 20px;
+  background-color: var(--middle-light-bg-color);
+  color: var(--black-text);
+  border-radius: 10px;
+  border: 2px solid var(--green-btn);
+  box-shadow: 0px 0px 10px 0px var(--black-box-shadow);
+  z-index: 99;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
+  animation: flyout 0.6s ease-in-out forwards;
+}
+
+@keyframes flyout {
+  25% {
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  75% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.info {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.control {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.control .btn {
+  width: 125px;
+  height: 45px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  margin-left: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnDownload {
+  background-color: var(--green-btn);
+  color: var(--white-text);
+}
+
+.btnUnselect {
+  background-color: var(--red-btn);
+  color: var(--black-text);
+}
+
+.btn:hover {
+  box-shadow: 0px 0px 10px 0px var(--black-box-shadow);
+}
+
+.btn:focus {
+  border: 1px solid var(--black-border);
+}
+
+.dark .btn:hover {
+  box-shadow: 0px 0px 10px 0px var(--white-box-shadow);
+}
+
+.flyout.dark {
+  border: 2px solid var(--white-btn);
+  box-shadow: 0px 0px 10px 0px var(--white-box-shadow);
+}
+
+.dark .btnDownload {
+  background-color: var(--middle-dark-bg-color);
+  color: var(--black-text);
+}
+
+.dark .btnUnselect {
+  background-color: var(--red-btn);
+  color: var(--white-text);
+}

@@ -2,14 +2,29 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, describe, vi, test, expect } from 'vitest';
 import HomePage from './Home';
-import { fetchData } from '../../services/api';
 import { Character } from '../../types/types';
+import { ThemeProvider } from '../../context/themeContext';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
+import { useGetCharactersQuery } from '../../store/swapiApi';
 
-vi.mock('../../services/api', () => ({
-  fetchData: vi.fn(),
-}));
+vi.mock('../../store/swapiApi', async () => {
+  const actual = await vi.importActual<typeof import('../../store/swapiApi')>('../../store/swapiApi');
+  return {
+    ...actual,
+    useGetCharactersQuery: vi.fn(),
+  };
+});
 
-const mockedFetchData = fetchData as ReturnType<typeof vi.fn>;
+const mockedFetchData = useGetCharactersQuery as ReturnType<typeof vi.fn>;
+
+const renderWithProviders = (ui: JSX.Element) => {
+  return render(
+    <Provider store={store}>
+      <ThemeProvider>{ui}</ThemeProvider>
+    </Provider>
+  );
+};
 
 describe('HomePage Component', () => {
   afterEach(() => {
@@ -17,11 +32,18 @@ describe('HomePage Component', () => {
   });
 
   test('should render without errors', () => {
-    render(
+    mockedFetchData.mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: false,
+    });
+
+    renderWithProviders(
       <MemoryRouter>
         <HomePage />
       </MemoryRouter>
     );
+
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
@@ -33,9 +55,14 @@ describe('HomePage Component', () => {
       ],
       totalPages: 1,
     };
-    mockedFetchData.mockResolvedValue(mockData);
 
-    render(
+    mockedFetchData.mockReturnValue({
+      data: mockData,
+      error: null,
+      isLoading: false,
+    });
+
+    renderWithProviders(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -50,31 +77,19 @@ describe('HomePage Component', () => {
     fireEvent.click(searchButton);
 
     await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
-    });
-
-    await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
       expect(screen.getByText('Darth Vader')).toBeInTheDocument();
     });
   });
 
   test('should display loader while fetching data', async () => {
-    mockedFetchData.mockImplementation(
-      () =>
-        new Promise((resolve) =>
-          setTimeout(
-            () =>
-              resolve({
-                cards: [],
-                totalPages: 1,
-              }),
-            100
-          )
-        )
-    );
+    mockedFetchData.mockReturnValue({
+      data: null,
+      error: null,
+      isFetching: true,
+    });
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <HomePage />
       </MemoryRouter>
@@ -87,14 +102,6 @@ describe('HomePage Component', () => {
     fireEvent.click(searchButton);
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalled();
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
-    });
   });
 
   test('should update the page number on pagination click', async () => {
@@ -102,9 +109,13 @@ describe('HomePage Component', () => {
       cards: [{ name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character],
       totalPages: 2,
     };
-    mockedFetchData.mockResolvedValue(mockData);
+    mockedFetchData.mockReturnValue({
+      data: mockData,
+      error: null,
+      isLoading: false,
+    });
 
-    render(
+    renderWithProviders(
       <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -113,7 +124,7 @@ describe('HomePage Component', () => {
     );
 
     await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
+      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     });
 
     const nextPageButton = screen.getByRole('button', { name: /→/i });
@@ -122,36 +133,7 @@ describe('HomePage Component', () => {
     fireEvent.click(nextPageButton);
 
     await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 2);
-    });
-  });
-
-  test('should update the page number on pagination click', async () => {
-    const mockData = {
-      cards: [{ name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character],
-      totalPages: 2,
-    };
-    mockedFetchData.mockResolvedValue(mockData);
-
-    render(
-      <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
-    });
-
-    const nextPageButton = screen.getByRole('button', { name: /→/i });
-    expect(nextPageButton).toBeInTheDocument();
-
-    fireEvent.click(nextPageButton);
-
-    await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 2);
+      expect(mockedFetchData).toHaveBeenCalledWith({ searchQuery: 'Luke', page: 2 });
     });
   });
 
@@ -160,9 +142,13 @@ describe('HomePage Component', () => {
       cards: [{ name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' } as Character],
       totalPages: 1,
     };
-    mockedFetchData.mockResolvedValue(mockData);
+    mockedFetchData.mockReturnValue({
+      data: mockData,
+      error: null,
+      isLoading: false,
+    });
 
-    render(
+    renderWithProviders(
       <MemoryRouter initialEntries={['/?search=Luke&page=1']}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -171,7 +157,7 @@ describe('HomePage Component', () => {
     );
 
     await waitFor(() => {
-      expect(mockedFetchData).toHaveBeenCalledWith('Luke', 1);
+      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     });
 
     const cardElement = screen.getByText('Luke Skywalker');
@@ -183,7 +169,7 @@ describe('HomePage Component', () => {
     fireEvent.click(closeButton);
 
     await waitFor(() => {
-      expect(closeButton).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument();
     });
   });
 });
