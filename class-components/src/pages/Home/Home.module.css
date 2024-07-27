@@ -12,12 +12,14 @@
 
 .main {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  position: relative;
   gap: 50px;
 }
 
 .mainSide {
   min-width: 70%;
+  margin: 0 auto;
 }
 
 .detailSide {

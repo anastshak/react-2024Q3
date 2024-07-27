@@ -9,10 +9,13 @@
   -moz-osx-font-smoothing: grayscale;
 
   --light-bg-color: #ffffff;
+  --middle-light-bg-color: #fff1d3;
   --dark-bg-color: #0d360f;
+  --middle-dark-bg-color: #3b833e;
 
   --green-border: rgb(50, 89, 49);
   --white-border: rgb(203, 219, 203);
+  --black-border: rgb(0, 0, 0);
 
   --black-box-shadow: rgba(0, 0, 0, 0.5);
   --white-box-shadow: rgba(206, 197, 197, 0.5);
@@ -21,6 +24,9 @@
   --green-text: rgb(50, 89, 49);
   --black-text: rgb(0, 0, 0);
   --white-text: aliceblue;
+
+  --red-btn: #de1717;
+  --green-btn: rgb(50, 89, 49);
 }
 
 a {

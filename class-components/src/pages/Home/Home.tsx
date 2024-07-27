@@ -12,11 +12,12 @@ import ThemeSwitcher from '../../components/Theme-Switcher/Theme-Switcher';
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
 
-import { useAppDispatch } from '../../hooks/useReduxStore';
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
 import { setCharacters, setLoading } from '../../store/charactersSlice';
 import { useGetCharactersQuery } from '../../store/swapiApi';
 
 import style from './Home.module.css';
+import FlyoutElement from '../../components/FlyoutElement/Flyout';
 
 export default function HomePage(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,6 +25,7 @@ export default function HomePage(): JSX.Element {
 
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
+  const selectedCharacters = useAppSelector((state) => state.selected.selectedCharacters);
 
   const searchQuery = searchParams.get('search') || '';
   const page = parseInt(searchParams.get('page') || '1', 10);
@@ -95,6 +97,7 @@ export default function HomePage(): JSX.Element {
             <CardDetails id={cardId} />
           </aside>
         )}
+        {selectedCharacters.length > 0 && <FlyoutElement />}
       </section>
     </>
   );
