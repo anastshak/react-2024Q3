@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Character } from '../types/types';
 
-type SelectedState = {
+export type SelectedState = {
   selectedCharacters: Character[];
 };
 

@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
+import { Provider } from 'react-redux';
 import CardList from './Card-list';
 import { Character } from '../../types/types';
 import { ThemeProvider } from '../../context/themeContext';
+import { store } from '../../store/store';
 
 describe('CardList component', () => {
   const mockCharacters: Character[] = [
@@ -18,19 +20,23 @@ describe('CardList component', () => {
 
   const mockHandleCardClick = vi.fn();
 
-  const renderWithTheme = (ui: JSX.Element) => {
-    return render(<ThemeProvider>{ui}</ThemeProvider>);
+  const renderWithProviders = (ui: JSX.Element) => {
+    return render(
+      <Provider store={store}>
+        <ThemeProvider>{ui}</ThemeProvider>
+      </Provider>
+    );
   };
 
   test('renders the specified number of cards', () => {
-    renderWithTheme(<CardList cards={mockCharacters} handleCardClick={mockHandleCardClick} />);
+    renderWithProviders(<CardList cards={mockCharacters} handleCardClick={mockHandleCardClick} />);
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(screen.getByText('Darth Vader')).toBeInTheDocument();
     expect(screen.getAllByText(/Skywalker|Vader/)).toHaveLength(2);
   });
 
   test('displays message if no cards are present', () => {
-    render(<CardList cards={[]} handleCardClick={mockHandleCardClick} />);
+    renderWithProviders(<CardList cards={[]} handleCardClick={mockHandleCardClick} />);
     expect(screen.getByText('No characters found')).toBeInTheDocument();
   });
 });

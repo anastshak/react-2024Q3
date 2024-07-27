@@ -26,8 +26,12 @@ export default function Card({ card, onCardClick }: Props): JSX.Element {
   };
 
   return (
-    <div className={classnames(style.card, { [style.dark]: theme === 'light' })} data-testid="card">
-      <div className={style.infoBox} onClick={() => onCardClick(id || '')}>
+    <div
+      className={classnames(style.card, { [style.dark]: theme === 'light' })}
+      onClick={() => onCardClick(id || '')}
+      data-testid="card"
+    >
+      <div className={style.infoBox}>
         <div className={style.info}>
           Name: <span>{card.name}</span>
         </div>
@@ -41,7 +45,7 @@ export default function Card({ card, onCardClick }: Props): JSX.Element {
           Birth year: <span>{card.birth_year}</span>
         </div>
       </div>
-      <div className={style.checkboxBox}>
+      <div className={style.checkboxBox} onClick={(e) => e.stopPropagation()}>
         <Checkbox card={card} selectCard={handleSelectCard} isSelected={isSelected} />
       </div>
     </div>
