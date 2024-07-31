@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 
 import Search from '../../components/Search/Search';
@@ -47,12 +47,9 @@ export default function HomePage(): JSX.Element {
     }
   }, [data, cardDetailsId, isFetching, dispatch]);
 
-  const onSearch = useCallback(
-    (searchQuery: string, page: number = 1) => {
-      setSearchParams({ search: searchQuery, page: page.toString(), details: cardId || '' });
-    },
-    [setSearchParams, cardId]
-  );
+  const onSearch = (searchQuery: string, page: number = 1) => {
+    setSearchParams({ search: searchQuery, page: page.toString(), details: cardId || '' });
+  };
 
   const onChangePage = (pageNumber: number) => {
     setSearchParams({ search: searchQuery, page: pageNumber.toString() });
@@ -75,7 +72,6 @@ export default function HomePage(): JSX.Element {
         <ErrorButton />
         <ThemeSwitcher />
       </header>
-      <Outlet />
       <section className={classnames(style.main, { [style.dark]: theme === 'light' })}>
         {isFetching ? (
           <Loader data-testid="loader" />
@@ -89,6 +85,7 @@ export default function HomePage(): JSX.Element {
             </section>
           </>
         )}
+        <Outlet />
         {cardId && (
           <aside className={style.detailSide}>
             <button type="button" onClick={handleCloseDetails}>
