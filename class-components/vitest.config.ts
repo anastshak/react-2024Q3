@@ -1,11 +1,10 @@
-/// <reference types="vitest" />
-/// <reference types="vite/client" />
-
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vitest/config';
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    open: true,
+  },
   plugins: [react()],
   test: {
     globals: true,
@@ -15,7 +14,7 @@ export default defineConfig({
       all: true,
       enabled: true,
       include: ['src/**/*'],
-      exclude: ['**/.eslintrc.cjs', 'vite.config.ts', 'dist'],
+      exclude: ['**/.eslintrc.cjs', 'vite.config.ts', 'vitest.config.ts', 'dist', '**/*.test.{js,jsx,ts,tsx}'],
       provider: 'v8',
       reporter: ['text'],
     },

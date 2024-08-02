@@ -1,23 +1,23 @@
-import type { JSX } from 'react';
+/* import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 
-import Search from '../../components/Search/Search';
-import { ErrorButton } from '../../components/Error/Error-button/Error-button';
-import CardList from '../../components/Card-list/Card-list';
-import Loader from '../../components/Loader/Loader';
-import Pagination from '../../components/Pagination/Pagination';
-import CardDetails from '../../components/Card-Details/Card-Details';
-import ThemeSwitcher from '../../components/Theme-Switcher/Theme-Switcher';
-import { useTheme } from '../../context/useTheme';
+import Search from '../components/Search/Search';
+import { ErrorButton } from '../components/Error/Error-button/Error-button';
+import CardList from '../components/Card-list/Card-list';
+import Loader from '../components/Loader/Loader';
+import Pagination from '../components/Pagination/Pagination';
+import CardDetails from '../components/Card-Details/Card-Details';
+import ThemeSwitcher from '../components/Theme-Switcher/Theme-Switcher';
+import { useTheme } from '../context/useTheme';
 import classnames from 'classnames';
+import FlyoutElement from '../components/FlyoutElement/Flyout';
 
-import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
-import { setCharacters, setLoading } from '../../store/charactersSlice';
-import { useGetCharactersQuery } from '../../store/swapiApi';
+import { useAppDispatch, useAppSelector } from '../hooks/useReduxStore';
+import { setCharacters, setLoading } from '../store/charactersSlice';
+import { useGetCharactersQuery } from '../store/swapiApi';
 
-import style from './Home.module.css';
-import FlyoutElement from '../../components/FlyoutElement/Flyout';
+import style from '../styles/Home.module.css';
 
 export default function HomePage(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -99,3 +99,9 @@ export default function HomePage(): JSX.Element {
     </>
   );
 }
+ */
+
+function Home() {
+  return <h1>Hello</h1>;
+}
+export default Home;
