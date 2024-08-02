@@ -7,7 +7,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <meta name="description" content="Star Wars characters" />
-          <link rel="icon" href="/vite.svg" />
+          <link rel="icon" href="/starwars.svg" />
         </Head>
         <body>
           <Main />
