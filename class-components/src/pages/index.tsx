@@ -1,68 +1,61 @@
-/* import type { JSX } from 'react';
-import { useEffect, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import type { JSX } from 'react';
+import { useRouter } from 'next/router';
 
 import Search from '../components/Search/Search';
 import { ErrorButton } from '../components/Error/Error-button/Error-button';
 import CardList from '../components/Card-list/Card-list';
-import Loader from '../components/Loader/Loader';
 import Pagination from '../components/Pagination/Pagination';
 import CardDetails from '../components/Card-Details/Card-Details';
 import ThemeSwitcher from '../components/Theme-Switcher/Theme-Switcher';
-import { useTheme } from '../context/useTheme';
-import classnames from 'classnames';
 import FlyoutElement from '../components/FlyoutElement/Flyout';
 
-import { useAppDispatch, useAppSelector } from '../hooks/useReduxStore';
-import { setCharacters, setLoading } from '../store/charactersSlice';
-import { useGetCharactersQuery } from '../store/swapiApi';
+import { useAppSelector } from '../hooks/useReduxStore';
+import { getRunningQueriesThunk, swapiApi, useGetCharactersQuery } from '../store/swapiApi';
+import { wrapper } from '../store/store';
+import { checkTypesSearchParams } from '../utils/utils';
 
+import { useTheme } from '../context/useTheme';
+import classnames from 'classnames';
 import style from '../styles/Home.module.css';
 
 export default function HomePage(): JSX.Element {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [cardId, setCardId] = useState<string | null>(null);
-
+  const router = useRouter();
   const { theme } = useTheme();
-  const dispatch = useAppDispatch();
+
   const selectedCharacters = useAppSelector((state) => state.selected.selectedCharacters);
 
-  const searchQuery = searchParams.get('search') || '';
-  const page = parseInt(searchParams.get('page') || '1', 10);
-  const cardDetailsId = searchParams.get('details');
+  const searchQuery = (router.query.search as string) || '';
+  const page = parseInt((router.query.page as string) || '1', 10);
+  const cardDetails = router.query.details as string;
 
-  const { data, error, isFetching } = useGetCharactersQuery({ searchQuery, page });
-
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(setLoading(true));
-    } else {
-      dispatch(setLoading(false));
-    }
-    if (data) {
-      dispatch(setCharacters(data));
-    }
-    if (cardDetailsId) {
-      setCardId(cardDetailsId);
-    }
-  }, [data, cardDetailsId, isFetching, dispatch]);
+  const { data } = useGetCharactersQuery({ searchQuery, page });
 
   const onSearch = (searchQuery: string, page: number = 1) => {
-    setSearchParams({ search: searchQuery, page: page.toString(), details: cardId || '' });
+    router.push({
+      pathname: '/',
+      query: { page: page.toString(), search: searchQuery, details: cardDetails || '' },
+    });
   };
 
   const onChangePage = (pageNumber: number) => {
-    setSearchParams({ search: searchQuery, page: pageNumber.toString() });
+    router.push({
+      pathname: '/',
+      query: { page: pageNumber.toString(), search: searchQuery, details: cardDetails || '' },
+    });
   };
 
   const handleCardDetailsClick = (id: string) => {
-    setCardId(id);
-    setSearchParams({ page: page.toString(), search: searchQuery, details: id });
+    router.push({
+      pathname: '/',
+      query: { page: page.toString(), search: searchQuery, details: id },
+    });
   };
 
   const handleCloseDetails = () => {
-    setCardId(null);
-    setSearchParams({ page: page.toString(), search: searchQuery });
+    router.push({
+      pathname: '/',
+      query: { page: page.toString(), search: searchQuery },
+    });
   };
 
   return (
@@ -73,11 +66,7 @@ export default function HomePage(): JSX.Element {
         <ThemeSwitcher />
       </header>
       <section className={classnames(style.main, { [style.dark]: theme === 'light' })}>
-        {isFetching ? (
-          <Loader data-testid="loader" />
-        ) : error ? (
-          <p>Error: {error.message}</p>
-        ) : (
+        {data && (
           <>
             <section className={style.mainSide}>
               <CardList cards={data?.cards || []} handleCardClick={handleCardDetailsClick} />
@@ -85,13 +74,12 @@ export default function HomePage(): JSX.Element {
             </section>
           </>
         )}
-        <Outlet />
-        {cardId && (
+        {cardDetails && (
           <aside className={style.detailSide}>
             <button type="button" onClick={handleCloseDetails}>
               Close
             </button>
-            <CardDetails id={cardId} />
+            <CardDetails id={cardDetails} />
           </aside>
         )}
         {selectedCharacters.length > 0 && <FlyoutElement />}
@@ -99,9 +87,26 @@ export default function HomePage(): JSX.Element {
     </>
   );
 }
- */
 
-function Home() {
-  return <h1>Hello</h1>;
-}
-export default Home;
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const { details, page, query } = context.query;
+
+  const { searchDetails, currentPage, searchQuery } = checkTypesSearchParams({ details, page, query });
+
+  await store.dispatch(
+    swapiApi.endpoints.getCharacters.initiate({
+      searchQuery: searchQuery,
+      page: currentPage,
+    })
+  );
+
+  if (searchDetails) {
+    await store.dispatch(swapiApi.endpoints.getCharacterById.initiate(searchDetails));
+  }
+
+  await Promise.all(store.dispatch(getRunningQueriesThunk()));
+
+  return {
+    props: {},
+  };
+});
