@@ -1,6 +1,5 @@
 import { ErrorNotFoundPage } from '../components/NotFoundPage/ErrorNotFound';
 
-function NotFoundPage() {
+export default function NotFoundPage() {
   return <ErrorNotFoundPage />;
 }
-export default NotFoundPage;
