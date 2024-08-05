@@ -1,10 +1,11 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import { ErrorPage } from './Error-page';
+import { renderWithProviders } from '../../../test/render-with-providers';
 
 describe('ErrorPage component', () => {
   test('should render the error message and reset button', () => {
-    render(<ErrorPage />);
+    renderWithProviders(<ErrorPage />);
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     expect(screen.getByText('Reset')).toBeInTheDocument();
   });
@@ -16,7 +17,7 @@ describe('ErrorPage component', () => {
       value: { reload: reloadMock },
     });
 
-    render(<ErrorPage />);
+    renderWithProviders(<ErrorPage />);
     const button = screen.getByText('Reset');
     fireEvent.click(button);
     expect(reloadMock).toHaveBeenCalledTimes(1);

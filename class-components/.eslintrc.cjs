@@ -8,8 +8,11 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vitest.config.ts', 'next.config.js'],
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: ['./tsconfig.json'],
+  },
   plugins: ['react-refresh', 'react-compiler'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],

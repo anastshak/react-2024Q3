@@ -1,12 +1,18 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import CardDetails from './Card-Details';
 import { useGetCharacterByIdQuery } from '../../store/swapiApi';
-import { ThemeProvider } from '../../context/themeContext';
+import { renderWithProviders } from '../../test/render-with-providers';
+import * as swapiApiModule from '../../store/swapiApi';
 
-vi.mock('../../store/swapiApi', () => ({
-  useGetCharacterByIdQuery: vi.fn(),
-}));
+vi.mock('../../store/swapiApi', async () => {
+  const actual = (await import('../../store/swapiApi')) as typeof swapiApiModule;
+
+  return {
+    ...actual,
+    useGetCharacterByIdQuery: vi.fn(),
+  };
+});
 
 const mockedUseGetCharacterByIdQuery = useGetCharacterByIdQuery as ReturnType<typeof vi.fn>;
 
@@ -22,10 +28,6 @@ describe('CardDetails Component', () => {
     eye_color: 'blue',
   };
 
-  const renderWithTheme = (ui: JSX.Element) => {
-    return render(<ThemeProvider>{ui}</ThemeProvider>);
-  };
-
   test('should display loading state initially', () => {
     mockedUseGetCharacterByIdQuery.mockReturnValue({
       data: null,
@@ -33,7 +35,7 @@ describe('CardDetails Component', () => {
       isLoading: true,
     });
 
-    renderWithTheme(<CardDetails id="1" />);
+    renderWithProviders(<CardDetails id="1" />);
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
@@ -45,7 +47,7 @@ describe('CardDetails Component', () => {
       isLoading: false,
     });
 
-    renderWithTheme(<CardDetails id="1" />);
+    renderWithProviders(<CardDetails id="1" />);
 
     await waitFor(() => {
       expect(screen.getByText(/Name:/i)).toHaveTextContent('Name: Luke Skywalker');
@@ -66,10 +68,24 @@ describe('CardDetails Component', () => {
       isLoading: false,
     });
 
-    renderWithTheme(<CardDetails id="1" />);
+    renderWithProviders(<CardDetails id="1" />);
 
     await waitFor(() => {
       expect(screen.getByText('Error fetching details')).toBeInTheDocument();
+    });
+  });
+
+  test('should display no details available message when data is null and no error', async () => {
+    mockedUseGetCharacterByIdQuery.mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: false,
+    });
+
+    renderWithProviders(<CardDetails id="1" />);
+
+    await waitFor(() => {
+      expect(screen.getByText('No details available')).toBeInTheDocument();
     });
   });
 });

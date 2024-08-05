@@ -22,10 +22,8 @@ export const swapiApi = createApi({
   }),
 });
 
-type UseGetCharactersQueryResult = ReturnType<typeof swapiApi.endpoints.getCharacters.useQuery>;
-type UseGetCharacterByIdQueryResult = ReturnType<typeof swapiApi.endpoints.getCharacterById.useQuery>;
-
-export const useGetCharactersQuery: (args: { searchQuery: string; page?: number }) => UseGetCharactersQueryResult =
-  swapiApi.endpoints.getCharacters.useQuery;
-export const useGetCharacterByIdQuery: (args: string) => UseGetCharacterByIdQueryResult =
-  swapiApi.endpoints.getCharacterById.useQuery;
+export const {
+  useGetCharacterByIdQuery,
+  useGetCharactersQuery,
+  util: { getRunningQueriesThunk },
+} = swapiApi;

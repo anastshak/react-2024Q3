@@ -41,3 +41,19 @@ export const convertToCSV = (cards: Character[]): string => {
   const csvContent = [headers.join(', '), str].join('\n');
   return csvContent;
 };
+
+type CheckAppFunctionParams = Record<string, unknown>;
+
+type AppSearchParams = {
+  searchDetails: string;
+  currentPage: number;
+  searchQuery: string;
+};
+
+export function checkTypesSearchParams({ details, page, query }: CheckAppFunctionParams): AppSearchParams {
+  return {
+    searchDetails: typeof details === 'string' ? details : '',
+    currentPage: typeof page === 'string' ? +page : 1,
+    searchQuery: typeof query === 'string' ? query : '',
+  };
+}
