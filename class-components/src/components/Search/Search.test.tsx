@@ -1,14 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import Search from './Search';
-import { ThemeProvider } from '../../context/themeContext';
+import { renderWithProviders } from '../../test/render-with-providers';
 
 describe('Search component', () => {
   const onSearchMock = vi.fn();
-
-  const renderWithTheme = (ui: JSX.Element) => {
-    return render(<ThemeProvider>{ui}</ThemeProvider>);
-  };
 
   beforeEach(() => {
     localStorage.clear();
@@ -16,7 +12,7 @@ describe('Search component', () => {
   });
 
   test('saves the entered value to local storage when Search button is clicked', () => {
-    renderWithTheme(<Search onSearch={onSearchMock} />);
+    renderWithProviders(<Search onSearch={onSearchMock} />);
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Please, enter your request');
     const button = screen.getByText('Search');
@@ -33,7 +29,7 @@ describe('Search component', () => {
   test('retrieves value from local storage upon mounting', () => {
     localStorage.setItem('searchValue', 'Stored Value');
 
-    renderWithTheme(<Search onSearch={onSearchMock} />);
+    renderWithProviders(<Search onSearch={onSearchMock} />);
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Please, enter your request');
     expect(input.value).toBe('Stored Value');

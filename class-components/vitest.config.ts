@@ -14,7 +14,7 @@ export default defineConfig({
       all: true,
       enabled: true,
       include: ['src/**/*'],
-      exclude: ['**/.eslintrc.cjs', 'vite.config.ts', 'vitest.config.ts', 'dist', '**/*.test.{js,jsx,ts,tsx}'],
+      exclude: ['src/test/**/*', '**/types.ts', '**/*.d.ts', '**/index.ts'],
       provider: 'v8',
       reporter: ['text'],
     },

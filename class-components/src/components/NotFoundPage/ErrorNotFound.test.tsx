@@ -1,25 +1,17 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, test, expect } from 'vitest';
 import { ErrorNotFoundPage } from './ErrorNotFound';
-import { BrowserRouter } from 'react-router-dom';
+import { renderWithProviders } from '../../test/render-with-providers';
 
 describe('ErrorNotFoundPage component', () => {
   test('should display the error message', () => {
-    render(
-      <BrowserRouter>
-        <ErrorNotFoundPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<ErrorNotFoundPage />);
 
     expect(screen.getByText('Page Not Found')).toBeInTheDocument();
   });
 
   test('should have a link to the home page', () => {
-    render(
-      <BrowserRouter>
-        <ErrorNotFoundPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<ErrorNotFoundPage />);
 
     const linkElement = screen.getByText('Go home');
     expect(linkElement).toBeInTheDocument();

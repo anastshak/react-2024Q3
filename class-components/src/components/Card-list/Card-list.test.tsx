@@ -1,10 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
-import { Provider } from 'react-redux';
 import CardList from './Card-list';
 import { Character } from '../../types/types';
-import { ThemeProvider } from '../../context/themeContext';
-import { store } from '../../store/store';
+import { renderWithProviders } from '../../test/render-with-providers';
 
 describe('CardList component', () => {
   const mockCharacters: Character[] = [
@@ -19,14 +17,6 @@ describe('CardList component', () => {
   ];
 
   const mockHandleCardClick = vi.fn();
-
-  const renderWithProviders = (ui: JSX.Element) => {
-    return render(
-      <Provider store={store}>
-        <ThemeProvider>{ui}</ThemeProvider>
-      </Provider>
-    );
-  };
 
   test('renders the specified number of cards', () => {
     renderWithProviders(<CardList cards={mockCharacters} handleCardClick={mockHandleCardClick} />);
