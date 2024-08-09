@@ -1,3 +1,5 @@
+'use client';
+
 import { JSX } from 'react';
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';

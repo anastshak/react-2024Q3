@@ -1,14 +1,17 @@
-import type { JSX } from 'react';
-import { useTheme } from '../../context/useTheme';
-import classnames from 'classnames';
+// 'use client';
 
-import styles from './Loader.module.css';
+// import type { JSX } from 'react';
+// import { useTheme } from '../../context/useTheme';
+// import classnames from 'classnames';
 
-export default function Loader(): JSX.Element {
-  const { theme } = useTheme();
+import style from './Loader.module.css';
+
+export default function Loader() {
+  // const { theme } = useTheme();
   return (
-    <div className={classnames(styles.loader, { [styles.dark]: theme === 'light' })} data-testid="loader">
-      <div className={styles.loaderSpinner}></div>
+    // <div className={classnames(style.loader, { [style.dark]: theme === 'light' })} data-testid="loader">
+    <div className={style.loader} data-testid="loader">
+      <div className={style.loaderSpinner}></div>
     </div>
   );
 }

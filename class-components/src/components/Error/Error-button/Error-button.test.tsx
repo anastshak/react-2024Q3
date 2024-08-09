@@ -19,7 +19,7 @@ describe('ErrorButton component', () => {
 
     expect(() => {
       fireEvent.click(button);
-    }).toThrow('Error');
+    }).toThrow('it is broken :(');
 
     console.error = originalError;
   });
