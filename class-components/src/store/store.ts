@@ -4,7 +4,7 @@ import { charactersReducer } from './charactersSlice';
 import { selectedCharactersReducer } from './selectedCharactersSlice';
 import { createWrapper } from 'next-redux-wrapper';
 
-const makeStore = () =>
+export const makeStore = () =>
   configureStore({
     reducer: {
       [swapiApi.reducerPath]: swapiApi.reducer,
@@ -14,7 +14,9 @@ const makeStore = () =>
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(swapiApi.middleware),
   });
 
-export type RootState = ReturnType<ReturnType<typeof makeStore>['getState']>;
-export type AppDispatch = ReturnType<typeof makeStore>['dispatch'];
+export type AppStore = ReturnType<typeof makeStore>;
+
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
 
 export const wrapper = createWrapper(makeStore);
