@@ -1,3 +1,5 @@
+'use client';
+
 import { JSX } from 'react';
 import { Character } from '../../types/types';
 import { idFromUrl } from '../../utils/utils';

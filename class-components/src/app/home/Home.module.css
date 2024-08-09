@@ -22,17 +22,7 @@
   margin: 0 auto;
 }
 
-.detailSide {
-  padding: 100px 0 0 20px;
-  border-left: solid 2px var(--green-border);
-  width: 30%;
-}
-
 .dark {
   background-color: var(--dark-bg-color);
   color: var(--white-text);
-}
-
-.dark .detailSide {
-  border-color: var(--white-border);
 }

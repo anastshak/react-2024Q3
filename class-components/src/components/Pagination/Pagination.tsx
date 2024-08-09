@@ -1,17 +1,34 @@
+'use client';
+
 import { JSX } from 'react';
 import classnames from 'classnames';
 import { useTheme } from '../../context/useTheme';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import style from './Pagination.module.css';
 
 type Props = {
   currentPage: number;
   totalPages: number;
-  changePage: (pageNumber: number) => void;
 };
 
-export default function Pagination({ currentPage, totalPages, changePage }: Props): JSX.Element {
+export default function Pagination({ currentPage, totalPages }: Props): JSX.Element {
   const { theme } = useTheme();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const searchQuery = searchParams.get('search') || '';
+  const cardDetails = searchParams.get('details') || '';
+
+  const changePage = (pageNumber: number) => {
+    const params = new URLSearchParams({
+      page: pageNumber.toString(),
+      search: searchQuery,
+      details: cardDetails || '',
+    });
+    router.push(`/?${params}`);
+  };
 
   const onPreviousPage = () => {
     if (currentPage > 1) {

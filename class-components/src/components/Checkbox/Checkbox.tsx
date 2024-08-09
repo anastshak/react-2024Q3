@@ -1,8 +1,10 @@
+'use client';
+
 import type { JSX } from 'react';
 import { Character } from '../../types/types';
 import { idFromUrl } from '../../utils/utils';
 
-import styles from './Checkbox.module.css';
+import style from './Checkbox.module.css';
 
 type Props = {
   card: Character;
@@ -14,8 +16,8 @@ export default function Checkbox({ card, selectCard, isSelected }: Props): JSX.E
   const id = idFromUrl(card.url);
 
   return (
-    <div className={styles.checkboxWrapper}>
-      <div className={styles.round} onChange={selectCard}>
+    <div className={style.checkboxWrapper}>
+      <div className={style.round} onChange={selectCard}>
         <input type="checkbox" id={`checkbox-${id}`} checked={isSelected} readOnly />
         <label htmlFor={`checkbox-${id}`}></label>
       </div>
