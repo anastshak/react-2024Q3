@@ -1,22 +1,31 @@
+'use client';
+
 import type { JSX } from 'react';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import styles from './Search.module.css';
 
-type Props = {
-  onSearch: (query: string, page: number) => void;
-};
-
-export default function Search({ onSearch }: Props): JSX.Element {
+export default function Search(): JSX.Element {
   const [inputValue, setInputValue] = useLocalStorage('searchValue');
 
   const { theme } = useTheme();
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const details = searchParams.get('details') || '';
+
+  const onSearch = (search: string, page: string = '1') => {
+    const params = new URLSearchParams({ page: page, search: search, details: details || '' });
+    router.push(`/?${params}`);
+  };
+
   const searchCharacter = async () => {
     localStorage.setItem('searchValue', inputValue);
-    onSearch(inputValue, 1);
+    onSearch(inputValue, '1');
   };
 
   return (
