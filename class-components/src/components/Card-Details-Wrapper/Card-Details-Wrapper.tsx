@@ -2,10 +2,10 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import CardDetails from '../Card-Details/Card-Details';
-
-import style from './Card-Details-Wrapper.module.css';
-import classnames from 'classnames';
 import { useTheme } from '../../context/useTheme';
+
+import classnames from 'classnames';
+import style from './Card-Details-Wrapper.module.css';
 
 export default function CardDetailsWrapper() {
   const { theme } = useTheme();

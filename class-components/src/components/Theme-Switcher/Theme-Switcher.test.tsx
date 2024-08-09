@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { describe, test, expect, vi, beforeEach, Mock } from 'vitest';
 import ThemeSwitcher from './Theme-Switcher';
 import { useTheme } from '../../context/useTheme';
 
@@ -8,14 +8,15 @@ vi.mock('../../context/useTheme', () => ({
 }));
 
 const mockToggleTheme = vi.fn();
+const mockedUseTheme = useTheme as Mock;
 
 describe('ThemeSwitcher Component', () => {
   beforeEach(() => {
-    (useTheme as vi.Mock).mockClear();
+    mockedUseTheme.mockClear();
   });
 
   test('renders correctly', () => {
-    (useTheme as vi.Mock).mockReturnValue({
+    mockedUseTheme.mockReturnValue({
       theme: 'light',
       toggleTheme: mockToggleTheme,
     });
@@ -26,7 +27,7 @@ describe('ThemeSwitcher Component', () => {
   });
 
   test('calls toggleTheme when button is clicked', () => {
-    (useTheme as vi.Mock).mockReturnValue({
+    mockedUseTheme.mockReturnValue({
       theme: 'light',
       toggleTheme: mockToggleTheme,
     });

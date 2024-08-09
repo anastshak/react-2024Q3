@@ -8,7 +8,6 @@ import Details from '../details/details';
 import { DataFetch } from '../../types/types';
 import ThemeBox from '../../context/ThemeBox';
 
-import classnames from 'classnames';
 import style from './Home.module.css';
 
 const BASE_URL = 'https://swapi.dev/api/people/';
@@ -40,12 +39,12 @@ export default async function HomePage({
   return (
     <>
       <ThemeBox>
-        <header className={classnames(style.header)}>
+        <header className={style.header}>
           <Search />
           <ErrorButton />
           <ThemeSwitcher />
         </header>
-        <section className={classnames(style.main)}>
+        <section className={style.main}>
           {data && (
             <>
               <section className={style.mainSide}>

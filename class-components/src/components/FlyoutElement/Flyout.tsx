@@ -3,11 +3,11 @@
 import type { JSX } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
 import { clearSelectedCards } from '../../store/selectedCharactersSlice';
-import classnames from 'classnames';
 import { useTheme } from '../../context/useTheme';
 import { convertToCSV } from '../../utils/utils';
 
-import styles from './Flyout.module.css';
+import classnames from 'classnames';
+import style from './Flyout.module.css';
 
 export default function FlyoutElement(): JSX.Element {
   const { theme } = useTheme();
@@ -31,17 +31,17 @@ export default function FlyoutElement(): JSX.Element {
 
   if (selectedCharacters.length > 0) {
     return (
-      <div className={classnames(styles.flyout, { [styles.dark]: theme === 'light' })}>
-        <p className={styles.info}> {numberOfElements} cards are selected: </p>
-        <p className={styles.control}>
+      <div className={classnames(style.flyout, { [style.dark]: theme === 'light' })}>
+        <p className={style.info}> {numberOfElements} cards are selected: </p>
+        <p className={style.control}>
           <a
             href={downloadCSV}
             download={`${numberOfElements}_cards.csv`}
-            className={classnames(styles.btn, styles.btnDownload)}
+            className={classnames(style.btn, style.btnDownload)}
           >
             Download
           </a>
-          <button type="button" className={classnames(styles.btn, styles.btnUnselect)} onClick={handleUnselect}>
+          <button type="button" className={classnames(style.btn, style.btnUnselect)} onClick={handleUnselect}>
             Unselect all
           </button>
         </p>

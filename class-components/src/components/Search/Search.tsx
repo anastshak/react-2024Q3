@@ -6,7 +6,7 @@ import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import styles from './Search.module.css';
+import style from './Search.module.css';
 
 export default function Search(): JSX.Element {
   const [inputValue, setInputValue] = useLocalStorage('searchValue');
@@ -30,15 +30,15 @@ export default function Search(): JSX.Element {
 
   return (
     <>
-      <div className={classnames(styles.search, { [styles.dark]: theme === 'light' })}>
+      <div className={classnames(style.search, { [style.dark]: theme === 'light' })}>
         <input
           type="text"
-          className={styles.input}
+          className={style.input}
           placeholder="Please, enter your request"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         ></input>
-        <button type="button" className={styles.btn} onClick={searchCharacter}>
+        <button type="button" className={style.btn} onClick={searchCharacter}>
           Search
         </button>
       </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 
-import styles from './Error-button.module.css';
+import style from './Error-button.module.css';
 
 export function ErrorButton(): JSX.Element {
   const [throwError, setThrowError] = useState(false);
@@ -17,7 +17,7 @@ export function ErrorButton(): JSX.Element {
   };
 
   return (
-    <button className={styles.errorBtn} onClick={handleThrowError} type="button">
+    <button className={style.errorBtn} onClick={handleThrowError} type="button">
       throw error
     </button>
   );
