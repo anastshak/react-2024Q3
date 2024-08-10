@@ -1,7 +1,10 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react';
+import type { MetaFunction, LinksFunction } from '@remix-run/node';
+
+import { ErrorNotFoundPage } from '@components/NotFoundPage/ErrorNotFound';
+import { ErrorPage } from '@components/Error/Error-page/Error-page';
+
 import './styles/global.css';
-import { LinksFunction } from '@remix-run/node';
-import type { MetaFunction } from '@remix-run/node';
 
 export const meta: MetaFunction = () => [{ title: 'Task 4-3' }, { name: 'description', content: 'Welcome to Remix!' }];
 export const links: LinksFunction = () => [{ rel: 'icon', type: 'image/svg', href: '/starwars.svg' }];
@@ -32,19 +35,10 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
-    return (
-      <>
-        <h1>
-          {error.status} {error.statusText}
-        </h1>
-        <p>{error.data}</p>
-      </>
-    );
+    return <ErrorNotFoundPage />;
   }
 
-  return (
-    <>
-      <h1>Error!</h1>
-    </>
-  );
+  console.error('it is broken :(', error);
+
+  return <ErrorPage />;
 }
