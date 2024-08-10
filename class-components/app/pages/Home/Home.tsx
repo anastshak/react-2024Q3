@@ -9,6 +9,7 @@ import Loader from '../../components/Loader/Loader';
 import Pagination from '../../components/Pagination/Pagination';
 import CardDetails from '../../components/Card-Details/Card-Details';
 import ThemeSwitcher from '../../components/Theme-Switcher/Theme-Switcher';
+import FlyoutElement from '../../components/FlyoutElement/Flyout';
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
 
@@ -17,7 +18,6 @@ import { setCharacters, setLoading } from '../../store/charactersSlice';
 import { useGetCharactersQuery } from '../../store/swapiApi';
 
 import style from './Home.module.css';
-import FlyoutElement from '../../components/FlyoutElement/Flyout';
 
 export default function HomePage(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
