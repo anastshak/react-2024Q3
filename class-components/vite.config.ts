@@ -1,23 +1,8 @@
-/// <reference types="vitest" />
-/// <reference types="vite/client" />
-
+import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setupTests.ts'],
-    coverage: {
-      all: true,
-      enabled: true,
-      include: ['src/**/*'],
-      exclude: ['**/.eslintrc.cjs', 'vite.config.ts', 'dist'],
-      provider: 'v8',
-      reporter: ['text'],
-    },
-  },
+  plugins: [remix(), tsconfigPaths()],
 });

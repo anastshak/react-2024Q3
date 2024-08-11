@@ -1,11 +1,40 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx"
+  ],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["@remix-run/node", "vite/client"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["app/assets/*"],
+      "@components/*": ["app/components/*"],
+      "@context/*": ["app/context/*"],
+      "@hooks/*": ["app/hooks/*"],
+      "@pages/*": ["app/pages/*"],
+      "@routes/*": ["app/routes/*"],
+      "@store/*": ["app/store/*"],
+      "@styles/*": ["app/styles/*"],
+      "@test/*": ["app/test/*"],
+      "@types/*": ["app/types/*"],
+      "@utils/*": ["app/utils/*"]
     },
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+    "noEmit": true
+  }
 }
