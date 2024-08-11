@@ -3,8 +3,8 @@ import { describe, test, expect, vi } from 'vitest';
 import { Provider } from 'react-redux';
 import { Store, configureStore } from '@reduxjs/toolkit';
 import FlyoutElement from './Flyout';
-import { ThemeProvider } from '../../context/themeContext';
-import { selectedCharactersReducer, clearSelectedCards, SelectedState } from '../../store/selectedCharactersSlice';
+import { ThemeProvider } from '@context/themeContext';
+import { selectedCharactersReducer, clearSelectedCards, SelectedState } from '@store/selectedCharactersSlice';
 
 URL.createObjectURL = vi.fn(() => 'http://mock-url.com');
 
