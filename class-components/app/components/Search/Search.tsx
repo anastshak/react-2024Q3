@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import useLocalStorage from '@hooks/useLocalStorage';
 import { useSearchParams } from '@remix-run/react';
 
-import { useTheme } from '../../context/useTheme';
+import { useTheme } from '@context/useTheme';
 import classnames from 'classnames';
 import styles from './Search.module.css';
 

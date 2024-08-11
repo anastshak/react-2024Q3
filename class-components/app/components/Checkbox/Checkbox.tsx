@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { Character } from '../../types/types';
-import { idFromUrl } from '../../utils/utils';
+import { idFromUrl } from '@utils/utils';
 
 import styles from './Checkbox.module.css';
 

@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 import { useSearchParams } from '@remix-run/react';
 
-import { useTheme } from '../../context/useTheme';
+import { useTheme } from '@context/useTheme';
 import classnames from 'classnames';
 import style from './Pagination.module.css';
 

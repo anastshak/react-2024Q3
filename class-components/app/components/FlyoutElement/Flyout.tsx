@@ -1,9 +1,9 @@
 import type { JSX } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
-import { clearSelectedCards } from '../../store/selectedCharactersSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/useReduxStore';
+import { clearSelectedCards } from '@store/selectedCharactersSlice';
 import classnames from 'classnames';
-import { useTheme } from '../../context/useTheme';
-import { convertToCSV } from '../../utils/utils';
+import { useTheme } from '@context/useTheme';
+import { convertToCSV } from '@utils/utils';
 
 import style from './Flyout.module.css';
 

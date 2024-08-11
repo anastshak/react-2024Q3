@@ -1,11 +1,11 @@
 import { JSX } from 'react';
 import { Character } from '../../types/types';
-import { idFromUrl } from '../../utils/utils';
-import { useTheme } from '../../context/useTheme';
+import { idFromUrl } from '@utils/utils';
+import { useTheme } from '@context/useTheme';
 import classnames from 'classnames';
-import Checkbox from '../Checkbox/Checkbox';
-import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
-import { toggleSelected } from '../../store/selectedCharactersSlice';
+import Checkbox from '@components/Checkbox/Checkbox';
+import { useAppDispatch, useAppSelector } from '@hooks/useReduxStore';
+import { toggleSelected } from '@store/selectedCharactersSlice';
 
 import style from './Card.module.css';
 

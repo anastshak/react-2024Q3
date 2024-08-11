@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 
-import styles from './Error-button.module.css';
+import style from './Error-button.module.css';
 
 export function ErrorButton(): JSX.Element {
   const [throwError, setThrowError] = useState(false);
 
   if (throwError) {
-    throw new Error('Error');
+    throw new Error('IT IS ERROR');
   }
 
+  const handleThrowError = () => {
+    setThrowError(true);
+  };
+
   return (
-    <button className={styles.errorBtn} onClick={() => setThrowError(true)} type="button">
+    <button className={style.errorBtn} onClick={handleThrowError} type="button">
       throw error
     </button>
   );

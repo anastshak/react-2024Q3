@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { useTheme } from '../../context/useTheme';
+import { useTheme } from '@context/useTheme';
 import classnames from 'classnames';
 
 import styles from './Theme-Switcher.module.css';
