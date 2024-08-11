@@ -1,11 +1,12 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { CharactersPerPage } from '../types/types';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigation } from '@remix-run/react';
 
 import FlyoutElement from '@components/FlyoutElement/Flyout';
 import CardList from '@components/Card-list/Card-list';
 import Pagination from '@components/Pagination/Pagination';
 import CardDetailsWrapper from '@components/Card-Details-Wrapper/Card-Details-Wrapper';
+import Loader from '@components/Loader/Loader';
 import { CharacterDetails } from '../types/types';
 
 import { useTheme } from '@context/useTheme';
@@ -44,6 +45,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Index() {
   const { cards, totalPages, pageNumber, detailsID, person } = useLoaderData<typeof loader>();
   const { theme } = useTheme();
+  const navigation = useNavigation();
+
+  if (navigation.state === 'loading') {
+    return (
+      <section className={classnames(style.page, { [style.dark]: theme === 'light' })}>
+        <Loader />
+      </section>
+    );
+  }
 
   return (
     <section className={classnames(style.main, { [style.dark]: theme === 'light' })}>
