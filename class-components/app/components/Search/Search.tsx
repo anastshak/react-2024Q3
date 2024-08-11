@@ -1,18 +1,22 @@
 import type { JSX } from 'react';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useSearchParams } from '@remix-run/react';
+
 import { useTheme } from '../../context/useTheme';
 import classnames from 'classnames';
-
 import styles from './Search.module.css';
 
-type Props = {
-  onSearch: (query: string, page: number) => void;
-};
-
-export default function Search({ onSearch }: Props): JSX.Element {
+export default function Search(): JSX.Element {
   const [inputValue, setInputValue] = useLocalStorage('searchValue');
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { theme } = useTheme();
+
+  const detailsID = searchParams.get('details');
+
+  const onSearch = (searchQuery: string, pageNumber: number = 1) => {
+    setSearchParams({ search: searchQuery, page: pageNumber.toString(), details: detailsID || '' });
+  };
 
   const searchCharacter = async () => {
     localStorage.setItem('searchValue', inputValue);

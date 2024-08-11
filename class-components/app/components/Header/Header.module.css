@@ -1,0 +1,12 @@
+.header {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.dark {
+  background-color: var(--dark-bg-color);
+  color: var(--white-text);
+}
