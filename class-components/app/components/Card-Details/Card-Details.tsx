@@ -1,28 +1,18 @@
 import type { JSX } from 'react';
-import { useTheme } from '../../context/useTheme';
-import classnames from 'classnames';
-import { useGetCharacterByIdQuery } from '../../store/swapiApi';
+import { CharacterDetails } from '../../types/types';
 
+import { useTheme } from '@context/useTheme';
+import classnames from 'classnames';
 import style from './Card-Details.module.css';
 
 type Props = {
-  id: string;
+  details: CharacterDetails;
 };
 
-export default function CardDetails({ id }: Props): JSX.Element {
-  const { data: details, error, isLoading } = useGetCharacterByIdQuery(id || '');
-
+export default function CardDetails({ details }: Props): JSX.Element {
   const { theme } = useTheme();
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error fetching details</p>;
-  }
-
-  if (!details) {
+  if (details.name == undefined) {
     return <p>No details available</p>;
   }
 

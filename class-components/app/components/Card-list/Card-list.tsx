@@ -1,19 +1,29 @@
+import { useSearchParams } from '@remix-run/react';
 import type { JSX } from 'react';
-import Card from '../Card/Card';
+
+import Card from '@components/Card/Card';
 import { Character } from '../../types/types';
-import { idFromUrl } from '../../utils/utils';
+import { idFromUrl } from '@utils/utils';
 
 import style from './Card-list.module.css';
 
 type Props = {
   cards: Character[];
-  handleCardClick: (id: string) => void;
 };
 
-export default function CardList({ cards, handleCardClick }: Props): JSX.Element {
+export default function CardList({ cards }: Props): JSX.Element {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchQuery = searchParams.get('search') || '';
+  const pageNumber = searchParams.get('page') || '1';
+
   if (cards.length === 0) {
     return <h1 className={style.noResult}>No characters found</h1>;
   }
+
+  const handleCardClick = (id: string) => {
+    setSearchParams({ page: pageNumber, search: searchQuery, details: id });
+  };
 
   return (
     <>

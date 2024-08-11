@@ -1,0 +1,9 @@
+.detailSide {
+  padding: 100px 0 0 20px;
+  border-left: solid 2px var(--green-border);
+  width: 30%;
+}
+
+.dark.detailSide {
+  border-color: var(--white-border);
+}
